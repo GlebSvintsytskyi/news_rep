@@ -24,7 +24,7 @@ class UserControler {
             return next(ApiError.badReguest('Такой пользователь уже существует'));
         }
 
-        const hashPassword = await bcrypt.hash(password, 5);
+        const hashPassword = await bcrypt.hash(password, process.env.SALT);
         const user = await User.create({email, role, password: hashPassword});
         const token = generateToken(user.id, user.email, user.role);
 

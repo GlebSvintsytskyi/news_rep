@@ -15,31 +15,33 @@ class NewsControler {
     }
 
     async change(req, res) {
-        const id = req.params.id;
+        try {
+           const {id} = req.params;
+           await News.update(req.body, 
+                {
+                    where: {id},
+                }
+           )
 
-        News.update(req.body, {
-            where: { id: id }
-          })
-          .then(() => {
-             res.status(200).json({message: 'Ok'});
-          })
-          .catch((error) => {
+           return res.status(200).json({message: 'Ok'});
+        } catch (error) {
             next(ApiError.badReguest(error.message));
-          })
+        }
     }
 
     async delete(req, res) {
-        const id = req.params.id;
+        try {
+            const {id} = req.params;
+            await News.destroy(
+                {
+                    where: {id},
+                }
+            )
 
-        News.destroy({
-            where: { id: id }
-        })
-        .then(() => {
-            res.status(200).json('Ok');
-        })
-        .catch((error) => {
+            return res.status(200).json('Ok');
+        } catch (error) {
             next(ApiError.badReguest(error.message));
-        })
+        }
     }
 
     async getOne(req, res) {
