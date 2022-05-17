@@ -1,10 +1,10 @@
 const Router = require('express');
 const router = new Router;
-const newsControler = require('../controlers/newsControler');
+const newsController = require('../controllers/newsController');
 
-router.post('/', newsControler.create);
-router.put('/:id', newsControler.change);
-router.delete('/:id', newsControler.delete);
-router.get('/:id', newsControler.getOne);
+router.post('/', newsController.create);
+router.put('/:id', newsController.change);
+router.delete('/:id', newsController.delete);
+router.get('/:id', newsController.getOne);
 
 module.exports = router;

@@ -4,16 +4,18 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
-function generateToken(id, email, role) {
-    return jwt.sign(
-        {id , email, role},
-        process.env.SECRET_KEY,
-        {expiresIn: '24h'}
-    );
-}
+class UserController {
+    
 
-class UserControler {
-    async registration(req, res) {
+    static generateToken(id, email, role) {
+        return jwt.sign(
+            {id , email, role},
+            process.env.SECRET_KEY,
+            {expiresIn: '24h'}
+        );
+    }
+
+    async registration(req, res, next) {
         const {email, password, role} = req.body;
         if(!email || !password) {
             return next(ApiError.badReguest('Некоректный email или password'));
@@ -24,9 +26,9 @@ class UserControler {
             return next(ApiError.badReguest('Такой пользователь уже существует'));
         }
 
-        const hashPassword = await bcrypt.hash(password, process.env.SALT);
+        const hashPassword = await bcrypt.hash(password, 5);
         const user = await User.create({email, role, password: hashPassword});
-        const token = generateToken(user.id, user.email, user.role);
+        const token = UserController.generateToken(user.id, user.email, user.role);
 
         return res.json({token});
     }
@@ -55,4 +57,4 @@ class UserControler {
     }
 }
 
-module.exports = new UserControler();
+module.exports = new UserController();

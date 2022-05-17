@@ -1,7 +1,7 @@
 const {News} = require('../models/models');
 const ApiError = require('../error/ApiError');
 
-class NewsControler {
+class NewsController {
     async create(req, res, next) {
         try {
             const {title, description} = req.body;
@@ -59,5 +59,5 @@ class NewsControler {
      }
 }
 
-module.exports = new NewsControler();
+module.exports = new NewsController();
 
