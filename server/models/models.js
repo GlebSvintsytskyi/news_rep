@@ -1,3 +1,5 @@
+'use strict'
+
 const sequelize = require('../db');
 const {DataTypes} = require('sequelize');
 
@@ -10,8 +12,8 @@ const User = sequelize.define('user', {
 
 const News = sequelize.define('news', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
-    title: {type: DataTypes.STRING, unique: true, allowNull: false},
-    description: {type: DataTypes.STRING, unique: true, allowNull: false}
+    title: {type: DataTypes.STRING, allowNull: false},
+    description: {type: DataTypes.STRING, allowNull: false}
 })
 
 User.hasMany(News);

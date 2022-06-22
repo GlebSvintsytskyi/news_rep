@@ -1,11 +1,21 @@
-const {News} = require('../models/models');
+'use strict'
+
 const ApiError = require('../error/ApiError');
+const NewsService = require('../services/createService');
 
 class NewsController {
-    async create(req, res, next) {
+    #newService;
+    constructor(){
+        this.#newService = new NewsService();
+    }
+    
+
+    create = async (req, res, next) => {
         try {
-            const {title, description} = req.body;
-            const news = await News.create( {title, description} );
+            const title = req.body.title;
+            const description = req.body.description;
+
+            const news = await this.#newService.createNews(title, description);
 
             return res.json(news);
         } catch (error) {
@@ -14,29 +24,21 @@ class NewsController {
 
     }
 
-    async change(req, res) {
+    change = async (req, res, next) => {
         try {
-           const {id} = req.params;
-           await News.update(req.body, 
-                {
-                    where: {id},
-                }
-           )
-
+           const id = req.params.id;
+           await this.#newService.updeateNews(req.body, id);
+               
            return res.status(200).json({message: 'Ok'});
         } catch (error) {
             next(ApiError.badReguest(error.message));
         }
     }
 
-    async delete(req, res) {
+    delete = async (req, res, next) => {
         try {
-            const {id} = req.params;
-            await News.destroy(
-                {
-                    where: {id},
-                }
-            )
+            const id = req.params.id;
+            await this.#newService.deleteNews(id);
 
             return res.status(200).json('Ok');
         } catch (error) {
@@ -44,14 +46,10 @@ class NewsController {
         }
     }
 
-    async getOne(req, res) {
+    getOne = async (req, res, next) => {
         try {
-            const {id} = req.params;
-            const news = await News.findOne(
-                {  
-                    where: {id},
-                },
-            ) 
+            const id = req.params.id;
+            const news = await this.#newService.getOneNews(id);
             return res.json(news);
         } catch (error) {
             next(ApiError.badReguest(error.message));
