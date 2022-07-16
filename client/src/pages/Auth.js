@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Container, Card, Form, Row, Button} from 'react-bootstrap';
 import { NavLink, useLocation } from 'react-router-dom';
+import { registration } from '../actions/auth';
 import { REGISTRATION_ROUTE } from '../utills/const';
 import { LOGIN_ROUTE } from '../utills/const';
 
@@ -8,6 +9,9 @@ import { LOGIN_ROUTE } from '../utills/const';
 const Auth = () => {
     const location = useLocation();
     const isLogin = location.pathname === LOGIN_ROUTE;
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+
 
     return(
         <Container
@@ -20,27 +24,42 @@ const Auth = () => {
                 <Form.Control
                     className="mt-3"
                     placeholder="Введите ваш email..."
+                    value={email}
+                    onChange={e => setEmail(e.target.value)}
                 />
                 <Form.Control
                     className="mt-3"
                     placeholder="Введите ваш пароль..."
+                    value={password}
+                    onChange={e => setPassword(e.target.value)}
                     type="password"
                 />
                 <Row className="d-flex justify-content-between mt-3 pl-3 pr-3">
                     {isLogin ?
-                        <div>
-                            Нет аккаунта? <NavLink to={REGISTRATION_ROUTE}>Зарегистрируйся!</NavLink>
-                        </div>
+                        <Row>
+                            <div>
+                                   Нет аккаунта? <NavLink to={REGISTRATION_ROUTE}>Зарегистрируйся!</NavLink>
+                            </div>
+                            <Button
+                                variant={"outline-success"}
+                            >
+                                Войти
+                            </Button>
+                        </Row>
                         :
-                        <div>
-                            Есть аккаунт? <NavLink to={LOGIN_ROUTE}>Войдите!</NavLink>
-                        </div>
+                        <Row>
+                            <div>
+                                Есть аккаунт? <NavLink to={LOGIN_ROUTE}>Войдите!</NavLink>
+                            </div>
+                                
+                            <Button
+                                variant={"outline-success"}
+                                onClick={() => registration(email, password)}
+                            >
+                                Регистрация
+                            </Button>
+                        </Row>   
                     }
-                    <Button
-                        variant={"outline-success"}
-                    >
-                        {isLogin ? 'Войти' : 'Регистрация'}
-                    </Button>
                 </Row>
 
             </Form>

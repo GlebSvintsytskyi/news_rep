@@ -1,23 +1,31 @@
-const defolteState = {
-  isAuth: false,
-  user: {}
-};
+const SET_USER = "SET_USER"
+const LOGOUT = "LOGOUT"
 
-export const authReducer = (state = defolteState, action) => {
-  switch (action.type) {
-    case 'SET_AUTH':
-      return {...state, isAuth: action.payload};
-
-      case 'SET_USER':
-        return {...state, user: action.payload};
-      
-      case 'GET_AUTH':
-        return {...state};
-    
-      case 'GET_USER':
-        return {...state};
-
-    default:
-      return state;
-  }
+const defaultState = {
+    currentUser: null,
+    isAuth: false
 }
+
+export const userReducer = (state = defaultState, action) => {
+    switch (action.type) {
+        case SET_USER:
+            return {
+                ...state,
+                currentUser: action.payload,
+                isAuth: true
+            }
+        case LOGOUT:
+            localStorage.removeItem('token')
+            return {
+                ...state,
+                currentUser: {},
+                isAuth: false
+            }
+        default:
+            return state
+    }
+}
+
+
+export const setUser = user => ({type: SET_USER, payload: user})
+export const logout = () => ({type: LOGOUT})

@@ -1,7 +1,6 @@
-import {LOGIN_ROUTE, REGISTRATION_ROUTE, NEWS_ROUTE, ADD_ROUTE} from './utills/const';
+import {LOGIN_ROUTE, REGISTRATION_ROUTE, NEWS_ROUTE } from './utills/const';
 import Auth from './pages/Auth';
 import News from './pages/News';
-import AddNews from './pages/AddNews';
 
 export const arrRoutes = [
     {
@@ -15,9 +14,5 @@ export const arrRoutes = [
     {
         path: NEWS_ROUTE,
         Component: News
-    },
-    {
-        path: ADD_ROUTE,
-        Component: AddNews
     },
 ]

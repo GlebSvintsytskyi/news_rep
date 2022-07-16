@@ -7,9 +7,9 @@ const NewsItem = () => {
         {id: "3", title: "sport", description: "Real winning La Liga"},
         {id: "18", title: "sporrrt", description: "Real winningdtds La Liga"},
         {id: "19", title: "sporrsfhart", description: "Real winningdtds La Ligfsga"},
-        {id: "19", title: "sporrsfhart", description: "Real winningdtds La Ligfsga"},
-        {id: "19", title: "sporrsfhart", description: "Real winningdtds La Ligfsga"},
-        {id: "19", title: "sporrsfhart", description: "Real winningdtds La Ligfsga"}
+        {id: "20", title: "sporrsfhart", description: "Real winningdtds La Ligfsga"},
+        {id: "21", title: "sporrsfhart", description: "Real winningdtds La Ligfsga"},
+        {id: "22", title: "sporrsfhart", description: "Real winningdtds La Ligfsga"}
     ]
 
     return(
