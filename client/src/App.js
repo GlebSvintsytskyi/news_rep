@@ -1,19 +1,21 @@
-import React from 'react';
+import React, { useEffect} from 'react';
 import AppRouter from './components/AppRouter';
 import { BrowserRouter } from 'react-router-dom';
 import NavBar from './components/NavBar';
-import { Provider } from 'react-redux';
-import { store } from './store/index';
+import { useDispatch } from 'react-redux';
+import { auth } from './actions/auth';
 
 const App = () => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch( auth() );
+  }, []);
 
   return (
-    <Provider store={store}>
       <BrowserRouter> 
         <NavBar/>
         <AppRouter/>
       </BrowserRouter>
-    </Provider>
   );
 }
 

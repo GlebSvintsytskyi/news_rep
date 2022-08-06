@@ -2,6 +2,7 @@ const ApiError = require("../error/ApiError");
 const {User} = require('../models/models');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const { validationResult } = require('express-validator');
 require('dotenv').config();
 
 class UserController {
@@ -11,16 +12,17 @@ class UserController {
         return jwt.sign(
             {id , email, role},
             process.env.SECRET_KEY,
-            {expiresIn: '24h'}
+            {expiresIn: '1h'}
         );
     }
 
     async registration(req, res, next) {
-        const {email, password, role} = req.body;
-        if(!email || !password) {
+        const errors = validationResult(req);
+
+        if (!errors.isEmpty()) {
             return next(ApiError.badReguest('Некоректный email или password'));
         }
-
+        const {email, password, role} = req.body;
         const candidate = await User.findOne({where: {email}});
         if (candidate) {
             return next(ApiError.badReguest('Такой пользователь уже существует'));
@@ -30,7 +32,15 @@ class UserController {
         const user = await User.create({email, role, password: hashPassword});
         const token = UserController.generateToken(user.id, user.email, user.role);
 
-        return res.json({token});
+        return res.json({
+            message: 'User was created',
+            token,
+            user: {
+                id: user.id,
+                email: user.email,
+                role: user.role
+            }
+        });
     }
 
     async login(req, res, next) {
@@ -46,14 +56,34 @@ class UserController {
             return next(ApiError.internal('Такой password не зарегистрирован'));
         }
 
-        const token = generateToken(user.id, user.email, user.role);
+        const token = UserController.generateToken(user.id, user.email, user.role);
 
-        res.json({token});
+        return res.json({
+            token,
+            user: {
+                id: user.id,
+                email: user.email,
+                role: user.role
+            }
+        });
     }
 
     async check(req, res, next) {
-        const token = generateToken(req.user.id, req.user.email, req.user.role);
-        res.send({token})
+        try {
+            const user = await User.findOne({id: req.user.id}); 
+            const token = UserController.generateToken(user.id, user.email, user.role);
+            return res.json({
+                token,
+                user: {
+                    id: user.id,
+                    email: user.email,
+                    role: user.role
+                }
+            })
+        } catch (e) {
+            console.log(e)
+            res.send({message: "Server error"})
+        }
     }
 }
 

@@ -1,16 +1,33 @@
 import React, { useState } from 'react';
 import { Container, Card, Form, Row, Button} from 'react-bootstrap';
-import { NavLink, useLocation } from 'react-router-dom';
-import { registration } from '../actions/auth';
+import { NavLink, useLocation, useHistory } from 'react-router-dom';
+import { registration, login } from '../actions/auth';
 import { REGISTRATION_ROUTE } from '../utills/const';
-import { LOGIN_ROUTE } from '../utills/const';
+import { LOGIN_ROUTE, NEWS_ROUTE } from '../utills/const';
+import { useDispatch } from 'react-redux';
 
 
 const Auth = () => {
     const location = useLocation();
+    const history = useHistory();
     const isLogin = location.pathname === LOGIN_ROUTE;
+    const dispatch = useDispatch();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+
+    const pushRegistration =  () => {
+        return async dispatch => {
+            dispatch(registration(email, password));
+            history.push(NEWS_ROUTE);
+        }
+    }
+
+    const pushLogin =  () => {
+        return async dispatch => {
+            dispatch(login(email, password));
+            history.push(NEWS_ROUTE);
+        }
+    }
 
 
     return(
@@ -42,6 +59,7 @@ const Auth = () => {
                             </div>
                             <Button
                                 variant={"outline-success"}
+                                onClick={() => dispatch( pushLogin() )}
                             >
                                 Войти
                             </Button>
@@ -54,7 +72,7 @@ const Auth = () => {
                                 
                             <Button
                                 variant={"outline-success"}
-                                onClick={() => registration(email, password)}
+                                onClick={() => dispatch( pushRegistration() )}
                             >
                                 Регистрация
                             </Button>

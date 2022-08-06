@@ -3,13 +3,18 @@
 const {News} = require('../models/models');
 
 class NewsService {
-    createNews = (title, description) => {
-        const news = {title, description}
+    createNews = (title, description, userId) => {
+        const news = {title, description, userId}
         return News.create( news );
     }
 
-    updeateNews = (body, id) => {
-        return News.update(body, 
+    updeateNews = async (body, id) => {
+     await News.update(body, 
+            {
+                where: {id},
+            }
+       )
+       return News.findOne(
             {
                 where: {id},
             }
@@ -25,12 +30,12 @@ class NewsService {
     }
 
 
-    getOneNews = (id) => {
-        return News.findOne(
-            {  
-                where: {id},
-            },
-        ) 
+    getAllNews = () => {
+        return News.findAll({
+            order: [
+                ['createdAt', 'DESC'],
+            ],
+        });
     }
 }
 

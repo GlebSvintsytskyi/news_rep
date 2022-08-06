@@ -13,7 +13,8 @@ const User = sequelize.define('user', {
 const News = sequelize.define('news', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     title: {type: DataTypes.STRING, allowNull: false},
-    description: {type: DataTypes.STRING, allowNull: false}
+    description: {type: DataTypes.STRING, allowNull: false},
+    userId: {type: DataTypes.INTEGER}
 })
 
 User.hasMany(News);

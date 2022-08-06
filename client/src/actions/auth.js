@@ -1,36 +1,52 @@
-import { setUser, logout } from '../store/userReducer'
-import AuthServices from '../services/auth.services'
+import axios from 'axios';
+import { setUser } from '../store/userReducer';
 
-export const registration = (email, password) => (dispatch) => {
-    return AuthServices.registr(email, password).then(
-      (response) => {
-        dispatch( setUser(response) );
-  
-        return Promise.resolve();
-      },
-      (error) => {
-        alert(error);
-        return Promise.reject();
-      }
-    );
-  };
+export const registration = (email, password) => {
+    return async dispatch => {
+        try {
+            const response = await axios.post('http://localhost:5000/api/user/registration', {
+                email,
+                password
+            });
 
-  export const login = (username, password) => (dispatch) => {
-    return AuthServices.login(username, password).then(
-      (response) => {
-        dispatch( setUser(response) );
-  
-        return Promise.resolve();
-      },
-      (error) => {
-        alert(error);
-        return Promise.reject();
-      }
-    );
-  };
+        dispatch( setUser(response.data.user) );
+        localStorage.setItem('token', response.data.token);
+        } catch (error) {
+            alert(error.response.data.message);
+        }
+    }
+}
 
-  export const exit = () => (dispatch) => {
-    AuthServices.logout();
-  
-    dispatch( logout() );
-  };
+export const login = (email, password) => {
+    return async dispatch => {
+        try {
+            const response = await axios.post('http://localhost:5000/api/user/login', {
+            email,
+            password
+        });
+
+        dispatch( setUser(response.data.user) );
+        localStorage.setItem('token', response.data.token);
+        } catch (error) {
+            alert(error.response.data.message);
+        }
+    }
+}
+
+export const auth = () => {
+    return async dispatch => {
+        try {
+            const token = localStorage.getItem('token');
+            if (token) {
+                const response = await axios.get('http://localhost:5000/api/user/auth', 
+                {headers:{Authorization:`Bearer ${token}`
+            }});
+
+            dispatch( setUser(response.data.user) );
+            localStorage.setItem('token', response.data.token);
+            }
+        } catch (error) {
+            localStorage.removeItem('token');
+        }
+    }
+}

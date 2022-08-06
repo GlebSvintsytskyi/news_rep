@@ -1,11 +1,19 @@
-import React from "react";
-import { Modal, Button, Form } from 'react-bootstrap';
+import React, { useState } from "react";
+import { Modal, Button, Form, Row } from 'react-bootstrap';
+import { createNews, updeateNews } from '../../actions/news';
+import { useDispatch } from 'react-redux'
 
-const AddNewsModal = ({show, onHide}) => {
+const AddNewsModal = ({news, swap, show, onHide}) => {
+    const [title, setTitle] = useState('');
+    const [description, setDescription] = useState('');
+    const dispatch = useDispatch();
+
     return (
         <Modal
             show={show}
             onHide={onHide}
+            swap={swap}
+            news={news}
             size="lg"
             aria-labelledby="contained-modal-title-vcenter"
             centered
@@ -20,16 +28,28 @@ const AddNewsModal = ({show, onHide}) => {
                 <Form.Control
                     className="mt-2"
                     placeholder="Введите заголовок"
+                    value={title}
+                    onChange={e => setTitle(e.target.value)}
                 />
                 <Form.Control
                     className="mt-2"
                     placeholder="Введите описание"
+                    value={description}
+                    onChange={e => setDescription(e.target.value)}
                 />
             </Form>
         </Modal.Body>
         <Modal.Footer>
-            <Button variant="outline-danger" onClick={onHide}>Добавить</Button>
+            <Row>
+            {
+                swap
+                ? 
+                <Button variant="outline-danger" onClick={() => dispatch( updeateNews(news.id, title, description) )}>Изменить</Button>
+                :
+                <Button variant="outline-danger" onClick={() => dispatch( createNews(title, description) )}>Добавить</Button>
+            }
             <Button variant="outline-success" onClick={onHide}>Закрыть</Button>
+            </Row>
         </Modal.Footer>
     </Modal>
     )

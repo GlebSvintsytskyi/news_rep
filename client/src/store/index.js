@@ -5,7 +5,7 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 import thunk from 'redux-thunk';
 
 const rootReducer = combineReducers({
-    news: newsReducer,
+    content: newsReducer,
     auth: userReducer
 })
 
