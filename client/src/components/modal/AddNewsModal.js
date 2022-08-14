@@ -27,13 +27,13 @@ const AddNewsModal = ({news, swap, show, onHide}) => {
             <Form>
                 <Form.Control
                     className="mt-2"
-                    placeholder="Введите заголовок"
+                    placeholder={swap ? news.title : "Введите заголовок"} 
                     value={title}
                     onChange={e => setTitle(e.target.value)}
                 />
                 <Form.Control
                     className="mt-2"
-                    placeholder="Введите описание"
+                    placeholder={swap ? news.description : "Введите заголовок"}
                     value={description}
                     onChange={e => setDescription(e.target.value)}
                 />
@@ -44,9 +44,9 @@ const AddNewsModal = ({news, swap, show, onHide}) => {
             {
                 swap
                 ? 
-                <Button variant="outline-danger" onClick={() => dispatch( updeateNews(news.id, title, description) )}>Изменить</Button>
+                <Button variant="outline-danger" onClick={() => dispatch( updeateNews(news.id, title, description)).then(onHide) }>Изменить</Button>
                 :
-                <Button variant="outline-danger" onClick={() => dispatch( createNews(title, description) )}>Добавить</Button>
+                <Button variant="outline-danger" onClick={() => dispatch( createNews(title, description) ).then(onHide)}>Добавить</Button>
             }
             <Button variant="outline-success" onClick={onHide}>Закрыть</Button>
             </Row>
