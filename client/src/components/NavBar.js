@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import { Navbar, Container, Nav, Button, NavLink} from 'react-bootstrap'
+import { Navbar, Container, Nav, Button, NavLink} from 'react-bootstrap';
 import { useSelector } from 'react-redux'
 import AddNewsModal from "./modal/AddNewsModal";
 import ExitModall from './modal/ExitModall';

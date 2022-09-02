@@ -22,7 +22,7 @@ function Example({show, onHide}) {
         </Modal.Header>
         <Modal.Body>
             <Button variant="outline-success"  onClick={onHide}>Отмена</Button>
-            <Button variant="outline-danger" onClick={() => dispatch( logout() )}>Выйти</Button>
+            <Button variant="outline-danger" onClick={() => dispatch( logout() ).then(onHide)}>Выйти</Button>
         </Modal.Body>
       </Modal>
     </>

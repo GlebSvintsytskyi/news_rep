@@ -33,7 +33,7 @@ const AddNewsModal = ({news, swap, show, onHide}) => {
                 />
                 <Form.Control
                     className="mt-2"
-                    placeholder={swap ? news.description : "Введите заголовок"}
+                    placeholder={swap ? news.description : "Введите описание"}
                     value={description}
                     onChange={e => setDescription(e.target.value)}
                 />

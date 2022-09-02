@@ -4,5 +4,5 @@ module.exports = function (err, req, res, next) {
     if (err instanceof ApiError) {
         return res.status(err.status).json( {message: err.message} );
     }
-    return res.status(500).json( {message: "Не знаю, что за ошибка"} );
+    return res.status(500).json( {message: err?.message ??  "Не знаю, что за ошибка"} );
 }

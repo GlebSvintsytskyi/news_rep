@@ -1,5 +1,5 @@
 const ApiError = require("../error/ApiError");
-const {User} = require('../models/models');
+const {User} = require('../db/models');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { validationResult } = require('express-validator');

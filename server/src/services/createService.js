@@ -1,11 +1,10 @@
 'use strict'
 
-const {News} = require('../models/models');
+const {News} = require('../db/models');
 
 class NewsService {
-    createNews = (title, description, userId) => {
-        const news = {title, description, userId}
-        return News.create( news );
+    createNews = async (object) => {
+        return await News.create( object );
     }
 
     updeateNews = async (body, id) => {
@@ -14,15 +13,15 @@ class NewsService {
                 where: {id},
             }
        )
-       return News.findOne(
+       return await News.findOne(
             {
                 where: {id},
             }
        )
     }
 
-    deleteNews = (id) => {
-        return News.destroy(
+    deleteNews = async (id) => {
+        return await News.destroy(
             {
                 where: {id},
             }
@@ -30,12 +29,20 @@ class NewsService {
     }
 
 
-    getAllNews = () => {
-        return News.findAll({
+    getAllNews = async () => {
+        return await News.findAll({
             order: [
                 ['createdAt', 'DESC'],
             ],
         });
+    }
+
+    getOneNews = (id) => {
+        return News.findOne(
+            {
+                where: {id},
+            }
+       );
     }
 }
 

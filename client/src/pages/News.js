@@ -14,7 +14,7 @@ const News = () => {
     });
 
     return(
-       <NewsItem/>
+        <NewsItem/>
     )
 }
 
